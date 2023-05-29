@@ -17,9 +17,13 @@ const getUserdById = (id) => {
   return User.findById(id);
 };
 
+const deleteUser = (id) => {
+  return User.findByIdAndDelete(id);
+};
 module.exports = {
   registerUser,
   getUserByEmail,
   getAllUsers,
-  getUserdById
+  getUserdById,
+  deleteUser
 };

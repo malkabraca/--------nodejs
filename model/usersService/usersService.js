@@ -25,9 +25,15 @@ const getUserdById = (id) => {
     return usersServiceMongo.getUserdById(id);
   }
 };
+const deleteUser = (id) => {
+  if (dbOption === "mongo") {
+    return usersServiceMongo.deleteUser(id);
+  }
+};
 module.exports = {
   registerUser,
   getUserByEmail,
   getAllUsers,
-  getUserdById
+  getUserdById,
+  deleteUser
 };

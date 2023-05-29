@@ -6,14 +6,16 @@ const checkIfOwner = async (iduser, res, next) => {
   try {
     //! joi the idcard
     const UserData = await getUserdById(iduser);
-    if (!UserData) {
-      return res.status(400).json({ msg: "user not found" });
-    }
-    if (UserData.user_id == iduser) {
-      next();
-    } else {
-      res.status(401).json({ msg: "you not the biz owner" });
-    }
+    console.log(UserData);
+    next();
+    // if (!UserData) {
+    //   return res.status(400).json({ msg: "user not found" });
+    // }
+    // if (UserData.user_id == iduser) {
+    //   next();
+    // } else {
+    //   res.status(401).json({ msg: "you not the biz owner" });
+    // }ד
   } catch (err) {
     res.status(400).json(err);
   }

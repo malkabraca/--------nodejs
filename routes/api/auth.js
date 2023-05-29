@@ -116,5 +116,24 @@ router.put(
     }
   }
 );
+//delete
+//http://localhost:8181/api/auth/users/:id
+router.delete(
+  "/users/:id",
+  authmw,
+  permissionsMiddlewareUser(false, true, true),
+  async (req, res) => {
+    try {
+
+      // await registerUserValidation(req.body);
+      // req.body.password = await hashService.generateHash(req.body.password);
+      // req.body = normalizeUser(req.body);
+      await usersServiceModel.deleteUser(req.body);
+      res.json({ msg: "delete" });
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+);
 
 module.exports = router;

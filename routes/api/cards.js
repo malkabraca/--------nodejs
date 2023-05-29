@@ -20,7 +20,7 @@ router.post("/", authmw, async (req, res) => {
 });
 
 // all
-router.get("/", async (req, res) => {
+router.get("/cards", async (req, res) => {
   try {
     const allCards = await cardsServiceModel.getAllCards();
     res.json(allCards);
@@ -28,6 +28,7 @@ router.get("/", async (req, res) => {
     res.status(400).json(err);
   }
 });
+
 
 // all
 router.get("/:id", async (req, res) => {
