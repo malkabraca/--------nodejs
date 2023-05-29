@@ -1,10 +1,6 @@
 const CustomError = require("../utils/CustomError");
 const { getUserdById } = require("../model/usersService/usersService");
 
-/*
-    TODO:
-        finish isBizSpecific
-*/
 
 const checkIfOwner = async (iduser, res, next) => {
   try {
