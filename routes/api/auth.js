@@ -10,7 +10,7 @@ const usersServiceModel = require("../../model/usersService/usersService");
 const { generateToken } = require("../../utils/token/tokenService");
 const CustomError = require("../../utils/CustomError");
 const authmw = require("../../middleware/authMiddleware");
-const permissionsMiddlewareUser = require("../../middleware/permissionsMiddlewareUser")
+const permissionsMiddlewareUser = require("../../middleware/permissionsMiddlewareUser");
 //register
 //http://localhost:8181/api/auth/users
 router.post("/users", async (req, res) => {
@@ -105,7 +105,6 @@ router.put(
   permissionsMiddlewareUser(false, false, true),
   async (req, res) => {
     try {
-
       await registerUserValidation(req.body);
       req.body.password = await hashService.generateHash(req.body.password);
       req.body = normalizeUser(req.body);
@@ -116,6 +115,32 @@ router.put(
     }
   }
 );
+//Edit is biz user
+//http://localhost:8181/api/auth/users/:id
+router.patch(
+  "/users/:id",
+  authmw,
+  permissionsMiddlewareUser(false, false, true),
+  async (req, res) => {
+    try {
+       //! joi validation
+      const bizCardID = req.params.id;
+      let userData = await usersServiceModel.getUserdById(bizCardID);
+      if (userData.isBusiness === true) {
+        userData.isBusiness = false;
+        userData = await userData.save();
+        res.json({ msg: "Editing was done false successfully" });
+      } else {
+        userData.isBusiness = true;
+        userData = await userData.save();
+        res.json({ msg: "Editing was done true successfully" });
+      }
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+);
+
 //delete
 //http://localhost:8181/api/auth/users/:id
 router.delete(
@@ -124,7 +149,7 @@ router.delete(
   permissionsMiddlewareUser(false, true, true),
   async (req, res) => {
     try {
-
+       //! joi validation
       // await registerUserValidation(req.body);
       // req.body.password = await hashService.generateHash(req.body.password);
       // req.body = normalizeUser(req.body);

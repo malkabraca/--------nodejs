@@ -89,7 +89,7 @@ router.patch("/like/:id",authmw,  async (req, res) => {
       // return res.send(card);
     }else{
       cardLike.likes = [...cardLike.likes,req.userData._id];
-      card = await cardLike.save();
+      cardLike = await cardLike.save();
       // return res.send(card);
     }
     res.json(cardLike);
