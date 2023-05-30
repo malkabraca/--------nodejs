@@ -4,6 +4,7 @@ const hashService = require("../../utils/hash/hashService");
 const {
   registerUserValidation,
   loginUserValidation,
+  idUserValidation,
 } = require("../../validation/authValidationService");
 const normalizeUser = require("../../model/usersService/helpers/normalizationUserService");
 const usersServiceModel = require("../../model/usersService/usersService");
@@ -90,6 +91,7 @@ router.get(
      ! joi
      */
       // await registerUserValidation(req.body);
+      await idUserValidation(req.params.id);
       const userData = await usersServiceModel.getUserdById(req.params.id);
       res.json(userData);
     } catch (err) {
@@ -105,6 +107,7 @@ router.put(
   permissionsMiddlewareUser(false, false, true),
   async (req, res) => {
     try {
+      await idUserValidation(req.params.id);
       await registerUserValidation(req.body);
       req.body.password = await hashService.generateHash(req.body.password);
       req.body = normalizeUser(req.body);
@@ -124,6 +127,7 @@ router.patch(
   async (req, res) => {
     try {
        //! joi validation
+       await idUserValidation(req.params.id);
       const bizCardID = req.params.id;
       let userData = await usersServiceModel.getUserdById(bizCardID);
       if (userData.isBusiness === true) {
@@ -153,6 +157,7 @@ router.delete(
       // await registerUserValidation(req.body);
       // req.body.password = await hashService.generateHash(req.body.password);
       // req.body = normalizeUser(req.body);
+      await idUserValidation(req.params.id);
       await usersServiceModel.deleteUser(req.body);
       res.json({ msg: "delete" });
     } catch (err) {
