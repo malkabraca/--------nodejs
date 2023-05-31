@@ -16,14 +16,6 @@ const permissionsMiddlewareUser = require("../../middleware/permissionsMiddlewar
 //http://localhost:8181/api/auth/users
 router.post("/users", async (req, res) => {
   try {
-    /*
-     * joi
-     * email unique - mongoose -> mongo
-     * encrypt the password
-     * normalize
-     * create user
-     * response user created
-     */
     await registerUserValidation(req.body);
     req.body.password = await hashService.generateHash(req.body.password);
     req.body = normalizeUser(req.body);
@@ -37,13 +29,6 @@ router.post("/users", async (req, res) => {
 //http://localhost:8181/api/auth/users/login
 router.post("/users/login", async (req, res) => {
   try {
-    /**
-     * *joi
-     * *get user from database
-     * *check password
-     * *create token
-     * *send to user
-     */
     await loginUserValidation(req.body);
     const userData = await usersServiceModel.getUserByEmail(req.body.email);
     if (!userData) throw new CustomError("invalid email and/or password");
@@ -87,10 +72,6 @@ router.get(
   permissionsMiddlewareUser(false, true, true),
   async (req, res) => {
     try {
-      /*
-     ! joi
-     */
-      // await registerUserValidation(req.body);
       await idUserValidation(req.params.id);
       const userData = await usersServiceModel.getUserdById(req.params.id);
       res.json(userData);
@@ -126,8 +107,7 @@ router.patch(
   permissionsMiddlewareUser(false, false, true),
   async (req, res) => {
     try {
-       //! joi validation
-       await idUserValidation(req.params.id);
+      await idUserValidation(req.params.id);
       const bizCardID = req.params.id;
       let userData = await usersServiceModel.getUserdById(bizCardID);
       if (userData.isBusiness === true) {
