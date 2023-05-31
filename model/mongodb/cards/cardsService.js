@@ -12,7 +12,6 @@ const getAllCards = () => {
 const getCardById = (id) => {
   return Card.findById(id);
 };
-
 const getCardByBizNumber = (bizNumber) => {
   return Card.findOne({ bizNumber }, { bizNumber: 1, _id: 0 });
 };

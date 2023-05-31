@@ -6,7 +6,31 @@ const cardsValidationService = require("../../validation/cardsValidationService"
 const permissionsMiddleware = require("../../middleware/permissionsMiddlewareCard");
 const authmw = require("../../middleware/authMiddleware");
 
-// biz only
+// get all cards, all
+http://localhost:8181/api/cards
+router.get("/cards", async (req, res) => {
+  try {
+    const allCards = await cardsServiceModel.getAllCards();
+    res.json(allCards);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// get all cards, all
+http://localhost:8181/api/cards/my-cards
+router.get("/my-cards",authmw, permissionsMiddleware(false,true, true), async (req, res) => {
+  try {
+  const allCards = await cardsServiceModel.getAllCards();
+  const myCard =allCards.filter((userId)=>userId = req.userData._id)
+    res.json(myCard);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// biz only, create card
+//localhost:8181/api/cards
 router.post("/", authmw, async (req, res) => {
   try {
     await cardsValidationService.createCardValidation(req.body);
@@ -18,17 +42,6 @@ router.post("/", authmw, async (req, res) => {
     res.status(400).json(err);
   }
 });
-
-// all
-router.get("/cards", async (req, res) => {
-  try {
-    const allCards = await cardsServiceModel.getAllCards();
-    res.json(allCards);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
 
 // all
 router.get("/:id", async (req, res) => {
@@ -99,14 +112,5 @@ router.patch("/like/:id",authmw,  async (req, res) => {
   }
 });
 
-/*
-  under the hood
-  let permissionsMiddleware2 = permissionsMiddleware(false, true, false)
-  router.delete(
-  "/:id",
-  authmw,
-  permissionsMiddleware2,
-  (req, res)=>{- - -});
-*/
 
 module.exports = router;
