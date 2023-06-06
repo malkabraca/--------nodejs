@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: true,
+    required: true,
     match: RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/),
     lowercase: true,
     trim: true,

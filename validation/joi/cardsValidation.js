@@ -28,7 +28,7 @@ const createCardSchema = Joi.object({
     alt: Joi.string().min(2).max(256).required(),
   }),
   address: Joi.object().keys({
-    state: Joi.string().min(2).max(256),
+    state: Joi.string().min(2).max(256).allow(""),
     country: Joi.string().min(2).max(256).required(),
     city: Joi.string().min(2).max(256).required(),
     street: Joi.string().min(2).max(256).required(),

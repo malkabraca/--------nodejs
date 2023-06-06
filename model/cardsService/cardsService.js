@@ -31,6 +31,13 @@ const updateCard = (id, cardToUpdate) => {
   }
 };
 
+const getCardByUserId = (userId) => {
+  if (dbOption === "mongo") {
+    return cardsServiceMongo.getCardByUserId(userId);
+  }
+};
+
+
 const deleteCard = (id) => {
   if (dbOption === "mongo") {
     return cardsServiceMongo.deleteCard(id);
@@ -44,4 +51,5 @@ module.exports = {
   getCardByBizNumber,
   updateCard,
   deleteCard,
+  getCardByUserId
 };

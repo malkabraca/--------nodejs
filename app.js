@@ -2,10 +2,12 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+// const logger = require("././utils/morgan")
 const cors = require("cors");
 const apiRouter = require("./routes/api");
 const config = require("config");
 const initialData = require("./initialData/initialData");
+const chalk = require("chalk");
 
 const app = express();
 
@@ -21,9 +23,9 @@ app.use(cors());
 // );
 app.use(
   logger(
-    ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
+':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
   )
-);
+);    
 // app.use(
 //   logger((tokens, req, res) => {
 //     return [
@@ -38,6 +40,7 @@ app.use(
 //     ].join(" ");
 //   })
 // );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

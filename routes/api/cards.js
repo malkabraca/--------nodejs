@@ -5,10 +5,11 @@ const normalizeCard = require("../../model/cardsService/helpers/normalizationCar
 const cardsValidationService = require("../../validation/cardsValidationService");
 const permissionsMiddleware = require("../../middleware/permissionsMiddlewareCard");
 const authmw = require("../../middleware/authMiddleware");
+const {idUserValidation,} = require("../../validation/authValidationService");
 
 // get all cards, all
-http://localhost:8181/api/cards
-router.get("/cards", async (req, res) => {
+//http://localhost:8181/api/cards
+router.get("/", async (req, res) => {
   try {
     const allCards = await cardsServiceModel.getAllCards();
     res.json(allCards);
@@ -18,12 +19,22 @@ router.get("/cards", async (req, res) => {
 });
 
 // get all cards, all
-http://localhost:8181/api/cards/my-cards
-router.get("/my-cards",authmw, permissionsMiddleware(false,true, true), async (req, res) => {
+//http://localhost:8181/api/cards/my-cards
+router.get("/my-cards", authmw, async (req, res) => {
   try {
-  const allCards = await cardsServiceModel.getAllCards();
-  const myCard =allCards.filter((userId)=>userId = req.userData._id)
-    res.json(myCard);
+    const myCards = await cardsServiceModel.getCardByUserId(req.userData._id);
+    res.json(myCards);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// all card, 
+router.get("/:id", authmw, async (req, res) => {
+  try {
+    await idUserValidation(req.params.id);
+    const cardFromDB = await cardsServiceModel.getCardById(req.params.id);
+    res.json(cardFromDB);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -36,54 +47,25 @@ router.post("/", authmw, async (req, res) => {
     await cardsValidationService.createCardValidation(req.body);
     let normalCard = await normalizeCard(req.body, req.userData._id);
     const dataFromMongoose = await cardsServiceModel.createCard(normalCard);
-    console.log("dataFromMongoose", dataFromMongoose);
-    res.json({ msg: "ok" });
+    res.json({ msg: "The card has been successfully received" });
   } catch (err) {
     res.status(400).json(err);
   }
 });
 
-// all
-router.get("/:id", async (req, res) => {
-  try {
-    //! joi validation
-    const cardFromDB = await cardsServiceModel.getCardById(req.params.id);
-    res.json(cardFromDB);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-// admin or biz owner
-router.put("/:id", async (req, res) => {
-  try {
-    //! joi validation
-    //! normalize
-    const cardFromDB = await cardsServiceModel.updateCard(
-      req.params.id,
-      req.body
-    );
-    res.json(cardFromDB);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-// admin or biz owner
-router.delete(
+router.put(
   "/:id",
   authmw,
-  permissionsMiddleware(false, true, true),
+  permissionsMiddleware(false, false, true),
   async (req, res) => {
     try {
-      //! joi validation
-      const cardFromDB = await cardsServiceModel.deleteCard(req.params.id);
-      if (cardFromDB) {
-        res.json({ msg: "card deleted" });
-      } else {
-        res.json({ msg: "could not find the card" });
-      }
+      await idUserValidation(req.params.id);
+      await cardsValidationService.createCardValidation(req.body);
+      let normalCard = await normalizeCard(req.body, req.userData._id);
+      const cardFromDB = await cardsServiceModel.updateCard(req.params.id,normalCard);
+      res.json(cardFromDB);
     } catch (err) {
+      console.log("err", err);
       res.status(400).json(err);
     }
   }
@@ -107,10 +89,33 @@ router.patch("/like/:id",authmw,  async (req, res) => {
     }
     res.json(cardLike);
   } catch (err) {
-    console.log(chalk.redBright("Could not edit like:",err.message));
+    console.log("Could not edit like:",err.message);
     res.status(500).json(err);
   }
 });
+
+
+// admin or biz owner
+router.delete(
+  "/:id",
+  authmw,
+  permissionsMiddleware(false, true, true),
+  async (req, res) => {
+    try {
+      await idUserValidation(req.params.id);
+      const cardFromDB = await cardsServiceModel.deleteCard(req.params.id);
+      if (cardFromDB) {
+        res.json({ msg: "card deleted" });
+      } else {
+        res.json({ msg: "could not find the card" });
+      }
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+);
+
+
 
 
 module.exports = router;
