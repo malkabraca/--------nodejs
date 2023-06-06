@@ -1,8 +1,8 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-// const logger = require("././utils/morgan")
+// const logger = require("morgan");
+const logger = require("./utils/chalkMorgan")
 const cors = require("cors");
 const apiRouter = require("./routes/api");
 const config = require("config");
@@ -21,11 +21,12 @@ app.use(cors());
 //     optionsSuccessStatus: 200,
 //   })
 // );
-app.use(
-  logger(
-':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
-  )
-);    
+app.use(logger)
+// app.use(
+//   logger(
+// ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
+//   )
+// );    
 // app.use(
 //   logger((tokens, req, res) => {
 //     return [
