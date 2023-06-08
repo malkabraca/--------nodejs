@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const hashService = require("../../utils/hash/hashService");
 const {
@@ -108,8 +109,8 @@ router.patch(
   async (req, res) => {
     try {
       await idUserValidation(req.params.id);
-      const bizCardID = req.params.id;
-      let userData = await usersServiceModel.getUserdById(bizCardID);
+      const bizUserID = req.params.id;
+      let userData = await usersServiceModel.getUserdById( bizUserID );
       if (userData.isBusiness === true) {
         userData.isBusiness = false;
         userData = await userData.save();

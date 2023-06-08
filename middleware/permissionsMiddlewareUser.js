@@ -32,12 +32,9 @@ const checkIfOwner = async (req, res, next, iduser) => {
 
 const permissionsMiddlewareUser = (isBiz, isAdmin, isOwner) => {
   return (req, res, next) => {
-    console.log(req);
-    // console.log("cos1", jwt.decode(req.rawHeaders[1])._id);
-    // console.log("cos2", req.params.id);
-    // console.log("cos3", req.params.id === jwt.decode(req.rawHeaders[1])._id);
-    // const string = Buffer.from(req.params.id, "hex").toString("utf-8");
-    // console.log(string);
+    // console.log(req.userData);
+    // console.log("parms", req.params.id);
+    // console.log("user", req.userData._id);
     if (!req.userData) {
       throw new CustomError("must provide userData");
     }
@@ -47,19 +44,13 @@ const permissionsMiddlewareUser = (isBiz, isAdmin, isOwner) => {
     if (isAdmin === req.userData.isAdmin && isAdmin === true) {
       return next();
     }
-    if (!(req.params.id === jwt.decode(req.rawHeaders[1])._id)) {
+    if (!(req.params.id === req.userData._id)) {
       res.status(401).json({ msg: "you are not the owner" });
     }
-
-    if (
-      req.params.id === jwt.decode(req.rawHeaders[1])._id &&
-      isOwner === true
-    ) {
+    if (req.params.id === req.userData._id && isOwner === true) {
       return next();
-      console.log("hello");
       //return checkIfOwner(req, res, next, req.params.id);
     }
-
     res
       .status(401)
       .json({ msg: "you not allowed to edit this user usermiddleware" });
