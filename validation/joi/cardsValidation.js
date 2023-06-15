@@ -41,7 +41,7 @@ const createCardSchema = Joi.object({
 
 const validateCardSchema = (userInput) => {
   return createCardSchema.validateAsync(userInput);
-};
+}
 
 module.exports = {
   validateCardSchema,

@@ -9,6 +9,7 @@
     "amit": "node console"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.11.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.1",
     "config": "^3.3.9",
@@ -17,11 +18,14 @@
     "cross-env": "^7.0.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "google-auth-library": "^8.8.0",
+    "googleapis": "^118.0.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^7.1.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "query-string": "^8.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

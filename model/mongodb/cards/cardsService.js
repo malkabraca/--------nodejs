@@ -23,12 +23,20 @@ const updateCard = (id, cardToUpdate) => {
   });
 };
 
+// const updateCard = (id, cardToUpdate) => {
+//   return Card.findByIdAndUpdate(
+//     id,
+//     { $set: { ...cardToUpdate, bizNumber: undefined } },
+//     { new: true }
+//   );
+// };
+
 const deleteCard = (id) => {
   return Card.findByIdAndDelete(id);
 };
 
 const getCardByUserId = (userId) => {
-  return Card.find({ user_id:userId});
+  return Card.find({ user_id: userId });
 };
 
 module.exports = {
@@ -38,5 +46,5 @@ module.exports = {
   getCardByBizNumber,
   updateCard,
   deleteCard,
-  getCardByUserId
+  getCardByUserId,
 };

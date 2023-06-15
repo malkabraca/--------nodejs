@@ -35,7 +35,8 @@ const permissionsMiddleware = (isBiz, isAdmin, isBizOwner) => {
     if (isAdmin === req.userData.isAdmin && isAdmin === true) {
       return next();
     }
-    if (isBizOwner === req.userData.isBusiness && isBizOwner === true) {
+    // if (isBizOwner === req.userData.isBusiness && isBizOwner === true) {
+      if (isBizOwner === true) {
       return checkIfBizOwner(req.userData._id, req.params.id, res, next);
     }
     

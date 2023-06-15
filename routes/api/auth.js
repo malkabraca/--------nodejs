@@ -27,8 +27,8 @@ router.post("/users", async (req, res) => {
   }
 });
 
-//http://localhost:8181/api/auth/users/login
-router.post("/users/login", async (req, res) => {
+//localhost:8181/api/auth/users/login
+ router.post("/users/login", async (req, res) => {
   try {
     await loginUserValidation(req.body);
     const userData = await usersServiceModel.getUserByEmail(req.body.email);
@@ -49,6 +49,46 @@ router.post("/users/login", async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+// const MAX_LOGIN_ATTEMPTS = 3;
+// const loginAttempts = new Map();
+
+// router.post("/users/login", async (req, res) => {
+//   try {
+//     await validateLoginSchema(req.body);
+//     const userData = await usersServiceModel.getUserByEmail(req.body.email);
+//     if (!userData) throw new CustomError("invalid email and/or password");
+
+//     const email = req.body.email;
+//     const attempts = loginAttempts.get(email) || 0;
+//     if (attempts >= MAX_LOGIN_ATTEMPTS) {
+//       throw new CustomError(
+//         "access blocked for 24 hours due to too many login attempts"
+//       );
+//     }
+
+//     const isPasswordMatch = await hashService.cmpHash(
+//       req.body.password,
+//       userData.password
+//     );
+//     if (!isPasswordMatch) {
+//       loginAttempts.set(email, attempts + 1);
+//       throw new CustomError("invalid email and/or password");
+//     }
+
+//     loginAttempts.delete(email);
+
+//     const token = await generateToken({
+//       _id: userData._id,
+//       isAdmin: userData.isAdmin,
+//       isBusiness: userData.isBusiness,
+//     });
+//     res.json({ token });
+//   } catch (err) {
+//     res.status(400).json(err);
+//   }
+// });
+
 //get all users,admin
 //http://localhost:8181/api/auth/users
 router.get(
@@ -81,8 +121,9 @@ router.get(
     }
   }
 );
-//TEdit user
-//http://localhost:8181/api/auth/users/:id
+
+// TEdit user
+// http://localhost:8181/api/auth/users/:id
 router.put(
   "/users/:id",
   authmw,
@@ -100,8 +141,9 @@ router.put(
     }
   }
 );
-//Edit is biz user
-//http://localhost:8181/api/auth/users/:id
+
+// Edit is biz user
+// http://localhost:8181/api/auth/users/:id
 router.patch(
   "/users/:id",
   authmw,
@@ -110,7 +152,7 @@ router.patch(
     try {
       await idUserValidation(req.params.id);
       const bizUserID = req.params.id;
-      let userData = await usersServiceModel.getUserdById( bizUserID );
+      let userData = await usersServiceModel.getUserdById(bizUserID);
       if (userData.isBusiness === true) {
         userData.isBusiness = false;
         userData = await userData.save();
@@ -134,7 +176,7 @@ router.delete(
   permissionsMiddlewareUser(false, true, true),
   async (req, res) => {
     try {
-       //! joi validation
+      //! joi validation
       // await registerUserValidation(req.body);
       // req.body.password = await hashService.generateHash(req.body.password);
       // req.body = normalizeUser(req.body);
