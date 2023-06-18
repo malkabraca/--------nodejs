@@ -2,11 +2,11 @@ const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
 // Replace with the client ID and secret you downloaded from the Google Cloud Console
-const CLIENT_ID = 'YOUR_CLIENT_ID';
-const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const CLIENT_ID = '694319760152-j01euqq1d5dbd16cu8185bacan4ka7mv.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
 
 // Replace with the redirect URI you set in the Google Cloud Console
-const REDIRECT_URI = 'http://localhost:3000/oauth2callback';
+const REDIRECT_URI = 'http://localhost::8181/oauth2callback';
 
 // Replace with the scopes you need for your application
 const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile'];
