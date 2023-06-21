@@ -2,10 +2,11 @@ const CustomError = require("../utils/CustomError");
 const { getUserdById } = require("../model/usersService/usersService");
 const { verifyToken } = require("../utils/token/jwt");
 const jwt = require("jsonwebtoken");
+const {idUserValidation}= require("../validation/authValidationService")
 
 const checkIfOwner = async (req, res, next, iduser) => {
   try {
-    // ! joi the iduser
+    await idUserValidation(iduser)
     const UserData = await getUserdById(iduser);
     // console.log(UserData);
     //console.log("logloglog", UserData._id, iduser, req.headers._id);

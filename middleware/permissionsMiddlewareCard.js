@@ -1,9 +1,10 @@
 const CustomError = require("../utils/CustomError");
 const { getCardById } = require("../model/cardsService/cardsService");
+const {idUserValidation}= require("../validation/authValidationService")
 
 const checkIfBizOwner = async (iduser, idcard, res, next) => {
   try {
-    //! joi the idcard
+    await idUserValidation(idcard);
     const cardData = await getCardById(idcard);
     if (!cardData) {
       return res.status(400).json({ msg: "" });

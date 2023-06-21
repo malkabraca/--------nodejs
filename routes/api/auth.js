@@ -30,43 +30,46 @@ router.post("/users", async (req, res) => {
 
 //googel api--------------
 
-// const CLIENT_ID =
-//   "694319760152-j01euqq1d5dbd16cu8185bacan4ka7mv.apps.googleusercontent.com";
-// const CLIENT_SECRET = "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";
-// const REDIRECT_URI = "http://localhost:8181/oauth2callback";
-// const SCOPES = ["https://www.googleapis.com/auth/userinfo.profile"];
-// const oAuth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+const CLIENT_ID =
+  "694319760152-j01euqq1d5dbd16cu8185bacan4ka7mv.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
+const REDIRECT_URI = "http://localhost:3000/oauth2callback";
+const SCOPES = ["https://www.googleapis.com/auth/userinfo.profile"];
+const oAuth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
-// router.get("/googel", (req, res) => {
-//     const authorizeUrl = oAuth2Client.generateAuthUrl({
-//       access_type: "offline",
-//       scope: SCOPES,
-//     });
-//     console.log("authorizeUrl   ", authorizeUrl);
-//     res.redirect(authorizeUrl);
-// });
+router.get("/googel", (req, res) => {
+    const authorizeUrl = oAuth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: SCOPES,
+    });
+    console.log("authorizeUrl   ", authorizeUrl);
+    res.redirect(authorizeUrl);
+});
 
-// router.get("/oauth2callback", async (req, res) => {
-//   const { code } = req.query;
-//   try {
-//     const { tokens } = await oAuth2Client.getToken(code);
-//     oAuth2Client.setCredentials(tokens);
-//     const accessToken = tokens.access_token;
-//     const people = google.people({ version: "v1", auth: accessToken });
-//     const { data } = await people.people.get({
-//       resourceName: "people/me",
-//       personFields: "names,emailAddresses",
-//     });
-//     console.log(`Name: ${data.names[0].displayName}`);
-//     console.log(`Email: ${data.emailAddresses[0].value}`);
-//     res.json({ data });
-//   } catch (err) {
-//     console.error(err);
-//     res.send("Authorization failed!");
-//   }
-// });
+router.get("/oauth2callback", async (req, res) => {
+  const { code } = req.query;
+  try {
+    const { tokens } = await oAuth2Client.getToken(code);
+    oAuth2Client.setCredentials(tokens);
+    const accessToken = tokens.access_token;
+    const people = google.people({ version: "v1", auth: accessToken });
+    const { data } = await people.people.get({
+      resourceName: "people/me",
+      personFields: "names,emailAddresses",
+    });
+    console.log(`Name: ${data.names[0].displayName}`);
+    console.log(`Email: ${data.emailAddresses[0].value}`);
+    res.json({ data });
+  } catch (err) {
+    console.error(err);
+    res.send("Authorization failed!");
+  }
+});
 
 // tast gogel
+
+
+
 //localhost:8181/api/auth/users/login
 router.post("/users/login", async (req, res) => {
   try {
