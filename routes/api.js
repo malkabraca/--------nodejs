@@ -21,21 +21,4 @@ router.use("/auth", authRouter);
 //http://localhost:8181/api/cards
 router.use("/cards", cardsRouter);
 
-// const generate_biz = () => {
-//   // throw new Error("yey error ;)");
-//   return Promise.reject("yey error ;)");
-// };
-
-// const normal_ = async () => {
-//   await generate_biz();
-// };
-
-// router.get("/createerror", async (req, res) => {
-//   try {
-//     await normal_();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
 module.exports = router;

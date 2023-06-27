@@ -30,6 +30,7 @@ router.get("/my-cards", authmw, async (req, res) => {
 });
 
 // all card,
+//http://localhost:8181/api/cards/:id
 router.get("/:id", authmw, async (req, res) => {
   try {
     await idUserValidation(req.params.id);
@@ -41,7 +42,7 @@ router.get("/:id", authmw, async (req, res) => {
 });
 
 // biz only, create card
-//localhost:8181/api/cards
+//http://localhost:8181/api/cards
 router.post("/", authmw, async (req, res) => {
   try {
      await cardsValidationService.createCardValidation(req.body);
@@ -54,14 +55,16 @@ router.post("/", authmw, async (req, res) => {
   }
 });
 
+//edit
+//http://localhost:8181/api/cards/:id
 router.put(
   "/:id",
   authmw,
   permissionsMiddleware(false, false, true),
   async (req, res) => {
     try {
-      await cardsValidationService.createCardValidation(req.body);
       await idUserValidation(req.params.id);
+      await cardsValidationService.createCardValidation(req.body);
       let normalCard = await normalizeCard(req.body, req.userData._id);
       const cardFromDB = await cardsServiceModel.getCardById(req.params.id);
       if (req.body.bizNumber !== cardFromDB.bizNumber) {
@@ -79,24 +82,6 @@ router.put(
     }
   }
 );
-
-// router.put(
-//   "/:id",
-//   authmw,
-//   permissionsMiddleware(false, false, true),
-//   async (req, res) => {
-//     try {
-//       await idUserValidation(req.params.id);
-//       await cardsValidationService.createCardValidation(req.body);
-//       let normalCard = await normalizeCard(req.body, req.userData._id);
-//       const cardFromDB = await cardsServiceModel.updateCard(req.params.id,normalCard);
-//       res.json(cardFromDB);
-//     } catch (err) {
-//       console.log("err", err);
-//       res.status(400).json(err);
-//     }
-//   }
-// );
 
 //http://localhost:8181/api/cards/like/:id
 router.patch("/like/:id", authmw, async (req, res) => {
@@ -123,7 +108,8 @@ router.patch("/like/:id", authmw, async (req, res) => {
   }
 });
 
-// admin or biz owner
+// delete,admin or biz owner
+//http://localhost:8181/api/cards/:id
 router.delete(
   "/:id",
   authmw,

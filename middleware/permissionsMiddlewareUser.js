@@ -4,33 +4,6 @@ const { verifyToken } = require("../utils/token/jwt");
 const jwt = require("jsonwebtoken");
 const {idUserValidation}= require("../validation/authValidationService")
 
-const checkIfOwner = async (req, res, next, iduser) => {
-  try {
-    await idUserValidation(iduser)
-    const UserData = await getUserdById(iduser);
-    // console.log(UserData);
-    //console.log("logloglog", UserData._id, iduser, req.headers._id);
-    // next();
-    if (!UserData) {
-      return res.status(400).json({ msg: "user not found" });
-    }
-    if (UserData.id == iduser) {
-      next();
-    } else {
-      //  console.log("logloglog", UserData._id, iduser);
-      res.status(401).json({ msg: "you not the owner" });
-    }
-  } catch (err) {
-    res.status(400).json(err);
-  }
-};
-
-/*
-  isBiz = every biz
-  isAdmin = is admin
-  isBizOwner = biz owner
-*/
-
 const permissionsMiddlewareUser = (isBiz, isAdmin, isOwner) => {
   return (req, res, next) => {
     // console.log(req.userData);

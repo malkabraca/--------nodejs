@@ -25,6 +25,14 @@ const getUserdById = (id) => {
     return usersServiceMongo.getUserdById(id);
   }
 };
+
+const updateUser = (id, userToUpdate) => {
+  if (dbOption === "mongo") {
+    return usersServiceMongo.updateUser(id,userToUpdate);
+  }
+};
+
+
 const deleteUser = (id) => {
   if (dbOption === "mongo") {
     return usersServiceMongo.deleteUser(id);
@@ -35,5 +43,6 @@ module.exports = {
   getUserByEmail,
   getAllUsers,
   getUserdById,
+  updateUser,
   deleteUser
 };

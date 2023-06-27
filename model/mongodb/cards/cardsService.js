@@ -17,19 +17,11 @@ const getCardByBizNumber = (bizNumber) => {
 };
 
 const updateCard = (id, cardToUpdate) => {
-  //normalize card
+  normaliz(cardToUpdate)
   return Card.findByIdAndUpdate(id, cardToUpdate, {
     new: true,
   });
 };
-
-// const updateCard = (id, cardToUpdate) => {
-//   return Card.findByIdAndUpdate(
-//     id,
-//     { $set: { ...cardToUpdate, bizNumber: undefined } },
-//     { new: true }
-//   );
-// };
 
 const deleteCard = (id) => {
   return Card.findByIdAndDelete(id);

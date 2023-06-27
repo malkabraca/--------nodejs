@@ -3,8 +3,5 @@
     "url": "mongodb://127.0.0.1:27017/bizcarddb"
   },
   "jwt": "780y94563hj2y45wopiunj",
-  "file": "dev",
-  "googelId":"694319760152-j01euqq1d5dbd16cu8185bacan4ka7mv.apps.googleusercontent.com",
-  "googelSecret":"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"
-
+  "file": "dev"
 }
