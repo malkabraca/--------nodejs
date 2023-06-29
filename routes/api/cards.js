@@ -77,7 +77,6 @@ router.put(
       );
       res.json(updatedCard);
     } catch (err) {
-      console.log("err", err);
       res.status(400).json(err);
     }
   }

@@ -32,31 +32,6 @@ router.post("/users", async (req, res) => {
 
 //login
 //localhost:8181/api/auth/users/login
-// router.post("/users/login", async (req, res) => {
-//   try {
-//     await loginUserValidation(req.body);
-//     const userData = await usersServiceModel.getUserByEmail(req.body.email);
-//     if (!userData) throw new CustomError("invalid email and/or password");
-//     const isPasswordMatch = await hashService.cmpHash(
-//       req.body.password,
-//       userData.password
-//     );
-//     if (!isPasswordMatch)
-//       throw new CustomError("invalid email and/or password");
-//     const token = await generateToken({
-//       _id: userData._id,
-//       isAdmin: userData.isAdmin,
-//       isBusiness: userData.isBusiness,
-//     });
-//     res.json({ token });
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// });
-
-
-//login
-//localhost:8181/api/auth/users/login
 router.post("/users/login", async (req, res) => {
   try {
     await loginUserValidation(req.body);
