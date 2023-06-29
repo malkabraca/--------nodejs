@@ -1,6 +1,7 @@
 const config = require("config");
 const cardsServiceMongo = require("../mongodb/cards/cardsService");
 const dbOption = config.get("dbOption");
+
 const createCard = (cardToSave) => {
   if (dbOption === "mongo") {
     return cardsServiceMongo.createCard(cardToSave);
@@ -38,6 +39,13 @@ const getCardByUserId = (userId) => {
 };
 
 
+const updateCardBiz = (bizNumber, bizNumberToUpdat) => {
+  if (dbOption === "mongo") {
+    return cardsServiceMongo.updateCardBiz(bizNumber, bizNumberToUpdat);
+  }
+};
+
+
 const deleteCard = (id) => {
   if (dbOption === "mongo") {
     return cardsServiceMongo.deleteCard(id);
@@ -51,5 +59,6 @@ module.exports = {
   getCardByBizNumber,
   updateCard,
   deleteCard,
-  getCardByUserId
+  getCardByUserId,
+  updateCardBiz,
 };

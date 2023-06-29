@@ -6,6 +6,7 @@ const cardsValidationService = require("../../validation/cardsValidationService"
 const permissionsMiddleware = require("../../middleware/permissionsMiddlewareCard");
 const authmw = require("../../middleware/authMiddleware");
 const { idUserValidation } = require("../../validation/authValidationService");
+const CustomError = require("../../utils/CustomError");
 
 // get all cards, all
 //http://localhost:8181/api/cards
@@ -45,8 +46,8 @@ router.get("/:id", authmw, async (req, res) => {
 //http://localhost:8181/api/cards
 router.post("/", authmw, async (req, res) => {
   try {
-     await cardsValidationService.createCardValidation(req.body);
-   
+    await cardsValidationService.createCardValidation(req.body);
+
     let normalCard = await normalizeCard(req.body, req.userData._id);
     const dataFromMongoose = await cardsServiceModel.createCard(normalCard);
     res.json({ msg: "The card has been successfully received" });
@@ -122,6 +123,43 @@ router.delete(
       } else {
         res.json({ msg: "could not find the card" });
       }
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+);
+
+//Bonus
+//admin
+//http://localhost:8181/api/cards/bizNum/:bizNumber
+
+router.patch(
+  "/bizNum/:bizNumber",
+  authmw,
+  permissionsMiddleware(false, true, false),
+  async (req, res) => {
+    try {
+      await cardsValidationService.bizNumberCardValidation(
+        req.params.bizNumber,
+        req.body.bizNumber
+      );
+      const cards = await cardsServiceModel.getAllCards();
+      const bizNumbers = cards.map((card) => card.bizNumber);
+
+      if (bizNumbers.includes(req.body.bizNumber)) {
+        throw new CustomError("The number is occupied by another card!");
+      }
+
+      const updateCardBiz = await cardsServiceModel.updateCardBiz(
+        req.params.bizNumber,
+        req.body.bizNumber
+      );
+
+      if (!updateCardBiz) {
+        throw new CustomError("Card does not exist!");
+      }
+
+      res.json(updateCardBiz);
     } catch (err) {
       res.status(400).json(err);
     }

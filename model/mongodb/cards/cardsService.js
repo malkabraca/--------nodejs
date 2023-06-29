@@ -27,6 +27,18 @@ const deleteCard = (id) => {
   return Card.findByIdAndDelete(id);
 };
 
+const updateCardBiz = async (bizNumber, bizNumberToUpdat) => {
+  const update = {
+    $set: {
+      bizNumber: bizNumberToUpdat
+    }
+  }
+  return Card.findOneAndUpdate({ bizNumber }, update, {
+    new: true,
+  });
+}; 
+
+
 const getCardByUserId = (userId) => {
   return Card.find({ user_id: userId });
 };
@@ -39,4 +51,5 @@ module.exports = {
   updateCard,
   deleteCard,
   getCardByUserId,
+  updateCardBiz
 };
